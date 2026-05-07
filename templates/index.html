@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="steps">
+  <div class="step {{ 'active' if not columns else 'done' }}">
+    <div class="dot">{{ '✓' if columns else '1' }}</div> Upload
+  </div>
+  <div class="step-line"></div>
+  <div class="step {{ 'active' if columns else '' }}">
+    <div class="dot">2</div> Target
+  </div>
+  <div class="step-line"></div>
+  <div class="step"><div class="dot">3</div> Train</div>
+  <div class="step-line"></div>
+  <div class="step"><div class="dot">4</div> Predict</div>
+</div>
+
+<h1>Upload Dataset</h1>
+<p class="subtitle">Upload your CSV file and begin your experiment</p>
+
+<div class="card">
+  <form method="POST" enctype="multipart/form-data" id="uploadForm">
+
+    <div class="drop-zone" id="dropZone">
+      <input type="file" name="file" accept=".csv" id="fileInput"
+             onchange="onFileSelected(this)">
+      <div class="dz-icon">📂</div>
+      <div class="dz-label" id="dzLabel">اسحب الملف هنا أو اضغط للاختيار</div>
+      <div class="dz-sub">CSV files only</div>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <button class="btn btn-primary" type="submit">↑ رفع ومعاينة</button>
+    </div>
+
+  </form>
+</div>
+
+{% if tables %}
+<div class="section-header" style="margin-top:2rem;">
+  <h3>معاينة البيانات</h3>
+  <div class="line"></div>
+</div>
+
+{% if row_count %}
+<div class="stats">
+  <div class="stat"><div class="val">{{ row_count }}</div><div class="lbl">Rows</div></div>
+  <div class="stat"><div class="val">{{ col_count }}</div><div class="lbl">Columns</div></div>
+  <div class="stat"><div class="val">10</div><div class="lbl">Previewed</div></div>
+</div>
+{% endif %}
+
+<div class="table-wrap">{{ tables[0] | safe }}</div>
+{% endif %}
+
+{% if columns %}
+<hr>
+<div class="section-header">
+  <h3>اختار عمود الـ Target</h3>
+  <div class="line"></div>
+</div>
+<div class="card">
+  <form action="/select_target" method="POST">
+    <div class="form-group">
+      <label>Target Column <span class="hint"></span>The column you want to predict</span></label>
+      <select name="target_column">
+        {% for col in columns %}<option value="{{ col }}">{{ col }}</option>{% endfor %}
+      </select>
+    </div>
+    <button class="btn btn-success" type="submit">Continue →</button>
+  </form>
+</div>
+{% endif %}
+
+<script>
+function onFileSelected(input) {
+  const label = document.getElementById('dzLabel');
+  if (input.files && input.files[0]) {
+    label.textContent = '✓ ' + input.files[0].name;
+  }
+}
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop',      e => { e.preventDefault(); dz.classList.remove('drag-over'); });
+</script>
+
+{% endblock %}

@@ -1,30 +1,36 @@
-from clean import clean_data
-from encode import encode_data
-from split import split_data
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 
-def preprocess_pipeline(df, target_column):
-    """
-    Full preprocessing pipeline:
-    1. Clean data
-    2. Encode categorical features
-    3. Split into train/test
-    """
 
-    print("\n" + "="*50)
-    print("STARTING FULL PREPROCESSING PIPELINE")
-    print("="*50)
+def build_preprocessor(X):
 
-    # Step 1: Cleaning
-    df = clean_data(df)
+    numeric_cols = X.select_dtypes(include=['number']).columns
+    categorical_cols = X.select_dtypes(include=['object', 'category']).columns
 
-    # Step 2: Encoding
-    df = encode_data(df)
+    numeric_transformer = SimpleImputer(strategy="mean")
 
-    # Step 3: Splitting
-    X_train, X_test, y_train, y_test = split_data(df, target_column)
+    categorical_transformer = Pipeline(steps=[
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("encoder", OneHotEncoder(handle_unknown="ignore"))
+    ])
 
-    print("="*50)
-    print("PIPELINE COMPLETED SUCCESSFULLY")
-    print("="*50 + "\n")
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_cols),
+            ("cat", categorical_transformer, categorical_cols)
+        ]
+    )
 
-    return X_train, X_test, y_train, y_test
+    return preprocessor
+
+
+def split_data(X, y):
+
+    return train_test_split(
+        X, y,
+        test_size=0.2,
+        random_state=42
+    )

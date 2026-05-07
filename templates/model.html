@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="steps">
+    <div class="step done"><div class="dot">✓</div> Upload Data</div>
+    <div class="step-line"></div>
+    <div class="step done"><div class="dot">✓</div> Select Target</div>
+    <div class="step-line"></div>
+    <div class="step active"><div class="dot">3</div> Train Model</div>
+    <div class="step-line"></div>
+    <div class="step"><div class="dot">4</div> Predict</div>
+</div>
+
+<h1>Choose a Model</h1>
+<p class="subtitle">Target: <span class="tag">{{ target_column }}</span></p>
+
+<form action="/train_model" method="POST">
+    <input type="hidden" name="target_column" value="{{ target_column }}">
+
+    <!-- Model Cards -->
+    <div class="card">
+        <h3>Algorithm</h3>
+        <div class="model-grid">
+            <div>
+                <input class="model-option" type="radio" name="model_name" id="m1"
+                       value="Logistic Regression" checked onchange="showParams('logistic')">
+                <label class="model-label" for="m1">
+                    <span class="m-name">Logistic Regression</span>
+                    <span class="m-type">Classification</span>
+                </label>
+            </div>
+            <div>
+                <input class="model-option" type="radio" name="model_name" id="m2"
+                       value="SVM" onchange="showParams('svm')">
+                <label class="model-label" for="m2">
+                    <span class="m-name">SVM</span>
+                    <span class="m-type">Classification</span>
+                </label>
+            </div>
+            <div>
+                <input class="model-option" type="radio" name="model_name" id="m3"
+                       value="KNN" onchange="showParams('knn')">
+                <label class="model-label" for="m3">
+                    <span class="m-name">KNN</span>
+                    <span class="m-type">Classification</span>
+                </label>
+            </div>
+            <div>
+                <input class="model-option" type="radio" name="model_name" id="m4"
+                       value="Random Forest" onchange="showParams('rf')">
+                <label class="model-label" for="m4">
+                    <span class="m-name">Random Forest</span>
+                    <span class="m-type">Classification</span>
+                </label>
+            </div>
+            <div>
+                <input class="model-option" type="radio" name="model_name" id="m5"
+                       value="Linear Regression" onchange="showParams('linreg')">
+                <label class="model-label" for="m5">
+                    <span class="m-name">Linear Regression</span>
+                    <span class="m-type">Regression</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Logistic Regression Params ── -->
+    <div class="card param-panel" id="params-logistic">
+        <h3>Logistic Regression — Hyperparameters</h3>
+        <div class="features-grid">
+            <div class="form-group">
+                <label>C <span class="hint">Regularization strength — default 1.0</span></label>
+                <input type="number" name="C" step="0.01" min="0.001" placeholder="1.0">
+            </div>
+            <div class="form-group">
+                <label>max_iter <span class="hint">Max iterations — default 100</span></label>
+                <input type="number" name="max_iter" step="1" min="50" placeholder="100">
+            </div>
+            <div class="form-group">
+                <label>solver <span class="hint">Optimization algorithm</span></label>
+                <select name="solver">
+                    <option value="lbfgs">lbfgs (default)</option>
+                    <option value="liblinear">liblinear</option>
+                    <option value="saga">saga</option>
+                    <option value="newton-cg">newton-cg</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SVM Params ── -->
+    <div class="card param-panel" id="params-svm" style="display:none;">
+        <h3>SVM — Hyperparameters</h3>
+        <div class="features-grid">
+            <div class="form-group">
+                <label>C <span class="hint">Regularization — default 1.0</span></label>
+                <input type="number" name="C" step="0.01" min="0.001" placeholder="1.0">
+            </div>
+            <div class="form-group">
+                <label>kernel <span class="hint">Kernel type</span></label>
+                <select name="kernel">
+                    <option value="rbf">rbf (default)</option>
+                    <option value="linear">linear</option>
+                    <option value="poly">poly</option>
+                    <option value="sigmoid">sigmoid</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>gamma <span class="hint">Kernel coefficient</span></label>
+                <select name="gamma">
+                    <option value="scale">scale (default)</option>
+                    <option value="auto">auto</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── KNN Params ── -->
+    <div class="card param-panel" id="params-knn" style="display:none;">
+        <h3>KNN — Hyperparameters</h3>
+        <div class="features-grid">
+            <div class="form-group">
+                <label>n_neighbors <span class="hint">Number of neighbors — default 5</span></label>
+                <input type="number" name="n_neighbors" step="1" min="1" placeholder="5">
+            </div>
+            <div class="form-group">
+                <label>weights <span class="hint">Weight function</span></label>
+                <select name="weights">
+                    <option value="uniform">uniform (default)</option>
+                    <option value="distance">distance</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>metric <span class="hint">Distance metric</span></label>
+                <select name="metric">
+                    <option value="minkowski">minkowski (default)</option>
+                    <option value="euclidean">euclidean</option>
+                    <option value="manhattan">manhattan</option>
+                    <option value="chebyshev">chebyshev</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Random Forest Params ── -->
+    <div class="card param-panel" id="params-rf" style="display:none;">
+        <h3>Random Forest — Hyperparameters</h3>
+        <div class="features-grid">
+            <div class="form-group">
+                <label>n_estimators <span class="hint">Number of trees — default 100</span></label>
+                <input type="number" name="n_estimators" step="1" min="10" placeholder="100">
+            </div>
+            <div class="form-group">
+                <label>max_depth <span class="hint">Max depth — empty = unlimited</span></label>
+                <input type="number" name="max_depth" step="1" min="1" placeholder="None">
+            </div>
+            <div class="form-group">
+                <label>min_samples_split <span class="hint">Min samples to split — default 2</span></label>
+                <input type="number" name="min_samples_split" step="1" min="2" placeholder="2">
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Linear Regression Params ── -->
+    <div class="card param-panel" id="params-linreg" style="display:none;">
+        <h3>Linear Regression — Hyperparameters</h3>
+        <div class="features-grid">
+            <div class="form-group">
+                <label>fit_intercept <span class="hint">Calculate intercept</span></label>
+                <select name="fit_intercept">
+                    <option value="true">True (default)</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit" style="margin-top:.5rem;">
+        ⚡ Train Model
+    </button>
+</form>
+
+<style>
+.hint {
+    display: block;
+    font-size: .68rem;
+    color: var(--muted);
+    font-weight: 400;
+    font-family: var(--mono);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-top: .15rem;
+}
+.param-panel {
+    border-left: 3px solid var(--accent);
+    animation: fadeIn .2s ease;
+}
+@keyframes fadeIn {
+    from { opacity:0; transform:translateY(5px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+</style>
+
+<script>
+function showParams(id) {
+    document.querySelectorAll(".param-panel")
+            .forEach(p => p.style.display = "none");
+    const p = document.getElementById("params-" + id);
+    if (p) p.style.display = "block";
+}
+showParams("logistic");
+</script>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="max-width:480px; margin: 4rem auto;">
+
+    <div class="card" style="text-align:center; padding:3rem 2rem;">
+
+        <div style="font-size:.75rem; font-family:var(--mono); color:var(--muted); letter-spacing:.08em; margin-bottom:1.5rem;">
+            {{ model_name }} — PREDICTION RESULT
+        </div>
+
+        <div class="result-val">{{ prediction }}</div>
+        <div class="result-label">Predicted output</div>
+
+        {% if probability %}
+        <div style="margin-top:2rem;">
+            <div style="display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:.4rem;">
+                <span>Confidence</span>
+                <span style="color:var(--accent); font-family:var(--mono);">{{ probability }}%</span>
+            </div>
+            <div class="prob-bar">
+                <div class="prob-fill" style="width:{{ probability }}%;"></div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <div style="display:flex; gap:.75rem; justify-content:center; margin-top:1.5rem;">
+        <a href="/" class="btn btn-ghost">← New Dataset</a>
+        <a href="javascript:history.back()" class="btn btn-primary">↩ Predict Again</a>
+    </div>
+
+</div>
+
+{% endblock %}
