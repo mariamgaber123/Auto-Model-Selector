@@ -10,4 +10,8 @@ def predict_model(model, input_data):
         input_data = input_data.reshape(1, -1)
 
     prediction = model.predict(input_data)
-    return prediction[0]
+
+    if isinstance(prediction, (float, np.floating)):
+        return round(float(prediction), 4)
+    
+    return prediction

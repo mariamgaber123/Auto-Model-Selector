@@ -128,3 +128,42 @@ def plot_boxplot(df, col_cat, col_num):
     _style(fig, ax)
     plt.tight_layout()
     return fig 
+
+def plot_pie(df, column):
+    fig, ax = plt.subplots(figsize=(8, 4.5))
+    counts = df[column].value_counts().head(10)  
+    palette = sns.color_palette("cool", len(counts))
+    
+    ax.pie(counts, labels=counts.index, autopct='%1.1f%%', 
+           startangle=140, colors=palette,
+           textprops={'color': TEXT, 'fontsize': 9},
+           wedgeprops={'edgecolor': BORDER, 'linewidth': 1})
+    
+    ax.set_title(f"Distribution Percentage — {column}")
+    _style(fig, ax)
+    ax.yaxis.grid(False)
+    ax.axis('off') 
+    
+    plt.tight_layout()
+    return fig
+
+def plot_stacked_bar(df, col_main, col_sub):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    ct = pd.crosstab(df[col_main], df[col_sub])
+    
+    ct.plot(kind='bar', stacked=True, ax=ax, 
+            color=sns.color_palette("cool", len(ct.columns)),
+            edgecolor=BORDER)
+
+    ax.set_title(f"Distribution of {col_sub} across {col_main}")
+    ax.set_xlabel(col_main)
+    ax.set_ylabel("Count")
+    
+    ax.legend(title=col_sub, bbox_to_anchor=(1.05, 1), loc='upper left', 
+              facecolor=CARD, edgecolor=BORDER, labelcolor=TEXT)
+    
+    plt.xticks(rotation=45, ha='right')
+    _style(fig, ax)
+    plt.tight_layout()
+    return fig

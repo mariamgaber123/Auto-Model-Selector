@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+ rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 {% block content %}
 
-<div style="max-width:480px; margin: 4rem auto;">
+<div style="max-width:780px; margin: 4rem auto;">
 
     <div class="card" style="text-align:center; padding:3rem 2rem;">
 
@@ -13,16 +15,16 @@
         <div class="result-label">Predicted output</div>
 
         {% if probability %}
-        <div style="margin-top:2rem;">
-            <div style="display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:.4rem;">
-                <span>Confidence</span>
-                <span style="color:var(--accent); font-family:var(--mono);">{{ probability }}%</span>
-            </div>
-            <div class="prob-bar">
-                <div class="prob-fill" style="width:{{ probability }}%;"></div>
-            </div>
-        </div>
-        {% endif %}
+<div class="prob-card" >
+    
+    <div class="prob-header">
+        <span>Confidence</span>
+        <span class="prob-value">{{ probability }}%</span>
+    </div>
+<div class="prob-fill"
+     style="width: {{ probability }}%;"></div>
+</div>
+{% endif %}
 
     </div>
 

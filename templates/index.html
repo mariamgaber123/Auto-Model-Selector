@@ -25,12 +25,12 @@
       <input type="file" name="file" accept=".csv" id="fileInput"
              onchange="onFileSelected(this)">
       <div class="dz-icon">📂</div>
-      <div class="dz-label" id="dzLabel">اسحب الملف هنا أو اضغط للاختيار</div>
+      <div class="dz-label" id="dzLabel">Drag the file or click to select</div>
       <div class="dz-sub">CSV files only</div>
     </div>
 
     <div style="margin-top:1rem;">
-      <button class="btn btn-primary" type="submit">↑ رفع ومعاينة</button>
+      <button class="btn btn-primary" type="submit">Upload and Preview↑</button>
     </div>
 
   </form>
@@ -38,7 +38,7 @@
 
 {% if tables %}
 <div class="section-header" style="margin-top:2rem;">
-  <h3>معاينة البيانات</h3>
+  <h3>Data Previewe </h3>
   <div class="line"></div>
 </div>
 
@@ -56,7 +56,7 @@
 {% if columns %}
 <hr>
 <div class="section-header">
-  <h3>اختار عمود الـ Target</h3>
+  <h3>Select Target Column </h3>
   <div class="line"></div>
 </div>
 <div class="card">

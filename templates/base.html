@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ML Studio</title>
+  <title>Auto Model Selector</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -11,14 +11,14 @@
 <nav>
   <a class="nav-logo" href="/">
     <span class="dot"></span>
-    ML_STUDIO
+    Auto Model Selector
   </a>
   <div class="nav-links">
     <a href="/"          class="{{ 'active' if request.path == '/'          else '' }}">Upload</a>
     <a href="/visualize" class="{{ 'active' if request.path == '/visualize' else '' }}">Visualize</a>
   </div>
   <div class="nav-spacer"></div>
-  <span class="nav-badge">v1.0</span>
+  
 </nav>
 
 <div class="page">
