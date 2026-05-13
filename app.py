@@ -144,6 +144,19 @@ def train_model_route():
             if min_samples_split is not None:
                 params["min_samples_split"] = min_samples_split
 
+        elif model_name == "Neural Network (MLP)":
+            params["activation"] = Str("activation")
+            params["solver"] = Str("solver")
+            params["learning_rate"] = Str("learning_rate")
+            
+            max_iter = Int("max_iter")
+            if max_iter is not None:
+                params["max_iter"] = max_iter
+            
+            hidden_layers = Str("hidden_layer_sizes")
+            if hidden_layers:
+                params["hidden_layer_sizes"] = hidden_layers        
+
         elif model_name == "Linear Regression":
             params["fit_intercept"] = (
                 request.form.get("fit_intercept", "true").lower() == "true"

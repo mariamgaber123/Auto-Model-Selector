@@ -3,7 +3,8 @@ from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.svm import SVC, SVR
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-
+from sklearn.neural_network import MLPClassifier
+import ast
 
 def get_model(model_name: str, params: dict = None):
     """
@@ -14,7 +15,15 @@ def get_model(model_name: str, params: dict = None):
     if params is None:
         params = {}
 
-    if model_name == "Logistic Regression":
+    if model_name == "Neural Network (MLP)":
+        if "hidden_layer_sizes" in params and isinstance(params["hidden_layer_sizes"], str):
+            try:
+                params["hidden_layer_sizes"] = ast.literal_eval(params["hidden_layer_sizes"])
+            except:
+                params["hidden_layer_sizes"] = (100,) 
+        return MLPClassifier(**params)
+
+    elif model_name == "Logistic Regression":
         return LogisticRegression(**params)
 
     elif model_name == "SVM":

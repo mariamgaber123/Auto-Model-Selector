@@ -47,6 +47,14 @@
                     <span class="m-type">Classification</span>
                 </label>
             </div>
+             <div>
+                <input class="model-option" type="radio" name="model_name" id="m6" value="Neural Network (MLP)"
+                    onchange="showParams('mlp')">
+                <label class="model-label" for="m6">
+                    <span class="m-name">Neural Network (MLP)</span>
+                    <span class="m-type">Classification</span>
+                </label>
+            </div>
             <div>
                 <input class="model-option" type="radio" name="model_name" id="m2" value="SVM"
                     onchange="showParams('svm')">
@@ -175,6 +183,47 @@
             <div class="form-group">
                 <label>min_samples_split <span class="hint">Min samples to split — default 2</span></label>
                 <input type="number" name="min_samples_split" step="1" min="2" placeholder="2">
+            </div>
+        </div>
+    </div>
+    <!-- ── Neural Network (MLP) Params ── -->
+    <div class="card param-panel" id="params-mlp" style="display:none;">
+        <h3>Neural Network (MLP) — Hyperparameters</h3>
+        <div class="features-grid">
+            <div class="form-group">
+                <label>Activation <span class="hint">Hidden layer function — default relu</span></label>
+                <select name="activation">
+                    <option value="relu">relu (default)</option>
+                    <option value="tanh">tanh</option>
+                    <option value="logistic">logistic (sigmoid)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Solver <span class="hint">Weight optimization — default adam</span></label>
+                <select name="solver">
+                    <option value="adam">adam (default)</option>
+                    <option value="sgd">sgd</option>
+                    <option value="lbfgs">lbfgs</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Learning Rate <span class="hint">Schedule type — default constant</span></label>
+                <select name="learning_rate">
+                    <option value="constant">constant</option>
+                    <option value="adaptive">adaptive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Max Iterations <span class="hint">Max epochs — default 1000</span></label>
+                <input type="number" name="max_iter" step="100" min="100" placeholder="1000" value="1000">
+            </div>
+
+            <div class="form-group">
+                <label>Hidden Layers <span class="hint">Example: (10, 10)</span></label>
+                <input type="text" name="hidden_layer_sizes" placeholder="(10, 10)" value="(10, 10)">
             </div>
         </div>
     </div>

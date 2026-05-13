@@ -10,7 +10,7 @@ from models.evaluate import evaluate_model
 from sklearn.utils.multiclass import type_of_target
 
 
-CLASSIFICATION_MODELS = {"Logistic Regression", "SVM", "KNN", "Random Forest"}
+CLASSIFICATION_MODELS = {"Logistic Regression", "SVM", "KNN", "Random Forest","Neural Network (MLP)"}
 REGRESSION_MODELS = {"Linear Regression"}
 
 

@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 
-CLASSIFICATION_MODELS = {"Logistic Regression", "SVM", "KNN", "Random Forest"}
+CLASSIFICATION_MODELS = {"Logistic Regression", "SVM", "KNN", "Random Forest","Neural Network (MLP)"}
 REGRESSION_MODELS = {"Linear Regression"}
 
 
