@@ -4,6 +4,7 @@ import numpy as np
 import io, base64
 from preprocessing.pipeline import build_preprocessor, split_data
 from main import full_pipeline
+from mainSmote import full_pipeline_S
 
 try:
     from plots.plot import plot_histogram, plot_bar, plot_heatmap, plot_scatter, plot_boxplot,plot_stacked_bar,plot_pie
@@ -151,9 +152,16 @@ def train_model_route():
                 request.form.get("fit_intercept", "true").lower() == "true"
             )
 
-        trained_model, metrics, feature_columns = full_pipeline(
-            df_global, target_column, model_name, params
-        )
+        use_smote = request.form.get("use_smote", "false") == "true"
+
+        if use_smote:
+            trained_model, metrics, feature_columns = full_pipeline_S(
+                df_global, target_column, model_name, params
+            )
+        else:
+            trained_model, metrics, feature_columns = full_pipeline(
+                df_global, target_column, model_name, params
+            )
 
         trained_model_global = trained_model
         feature_columns_global = list(feature_columns)

@@ -1,30 +1,10 @@
 from sklearn.model_selection import train_test_split
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import Pipeline
+from preprocessing.encode import encode_data
 
 
-def build_preprocessor(X):
+def build_preprocessor(df):
 
-    numeric_cols = X.select_dtypes(include=['number']).columns
-    categorical_cols = X.select_dtypes(include=['object', 'category']).columns
-
-    numeric_transformer = SimpleImputer(strategy="mean")
-
-    categorical_transformer = Pipeline(steps=[
-        ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("encoder", OneHotEncoder(handle_unknown="ignore"))
-    ])
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_transformer, numeric_cols),
-            ("cat", categorical_transformer, categorical_cols)
-        ]
-    )
-
-    return preprocessor
+    return encode_data(df)
 
 
 def split_data(X, y):

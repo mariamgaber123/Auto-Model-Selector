@@ -2,13 +2,21 @@
 {% block content %}
 
 <div class="steps">
-    <div class="step done"><div class="dot">✓</div> Upload Data</div>
+    <div class="step done">
+        <div class="dot">✓</div> Upload Data
+    </div>
     <div class="step-line"></div>
-    <div class="step done"><div class="dot">✓</div> Select Target</div>
+    <div class="step done">
+        <div class="dot">✓</div> Select Target
+    </div>
     <div class="step-line"></div>
-    <div class="step active"><div class="dot">3</div> Train Model</div>
+    <div class="step active">
+        <div class="dot">3</div> Train Model
+    </div>
     <div class="step-line"></div>
-    <div class="step"><div class="dot">4</div> Predict</div>
+    <div class="step">
+        <div class="dot">4</div> Predict
+    </div>
 </div>
 
 <h1>Choose a Model</h1>
@@ -20,42 +28,52 @@
     <!-- Model Cards -->
     <div class="card">
         <h3>Algorithm</h3>
+        <div class="smote-card">
+            <div class="smote-title" style="font-size: 24;">Imbalance Handling</div>
+            <div style="height: 18px;"></div>
+
+            <label class="smote-option">
+                <input type="checkbox" name="use_smote" value="true">
+                <span>Use SMOTE</span>
+            </label>
+        </div>
+        <div style="height: 18px;"></div>
         <div class="model-grid">
             <div>
-                <input class="model-option" type="radio" name="model_name" id="m1"
-                       value="Logistic Regression" checked onchange="showParams('logistic')">
+                <input class="model-option" type="radio" name="model_name" id="m1" value="Logistic Regression" checked
+                    onchange="showParams('logistic')">
                 <label class="model-label" for="m1">
                     <span class="m-name">Logistic Regression</span>
                     <span class="m-type">Classification</span>
                 </label>
             </div>
             <div>
-                <input class="model-option" type="radio" name="model_name" id="m2"
-                       value="SVM" onchange="showParams('svm')">
+                <input class="model-option" type="radio" name="model_name" id="m2" value="SVM"
+                    onchange="showParams('svm')">
                 <label class="model-label" for="m2">
                     <span class="m-name">SVM</span>
                     <span class="m-type">Classification</span>
                 </label>
             </div>
             <div>
-                <input class="model-option" type="radio" name="model_name" id="m3"
-                       value="KNN" onchange="showParams('knn')">
+                <input class="model-option" type="radio" name="model_name" id="m3" value="KNN"
+                    onchange="showParams('knn')">
                 <label class="model-label" for="m3">
                     <span class="m-name">KNN</span>
                     <span class="m-type">Classification</span>
                 </label>
             </div>
             <div>
-                <input class="model-option" type="radio" name="model_name" id="m4"
-                       value="Random Forest" onchange="showParams('rf')">
+                <input class="model-option" type="radio" name="model_name" id="m4" value="Random Forest"
+                    onchange="showParams('rf')">
                 <label class="model-label" for="m4">
                     <span class="m-name">Random Forest</span>
                     <span class="m-type">Classification</span>
                 </label>
             </div>
             <div>
-                <input class="model-option" type="radio" name="model_name" id="m5"
-                       value="Linear Regression" onchange="showParams('linreg')">
+                <input class="model-option" type="radio" name="model_name" id="m5" value="Linear Regression"
+                    onchange="showParams('linreg')">
                 <label class="model-label" for="m5">
                     <span class="m-name">Linear Regression</span>
                     <span class="m-type">Regression</span>
@@ -181,34 +199,43 @@
 </form>
 
 <style>
-.hint {
-    display: block;
-    font-size: .68rem;
-    color: var(--muted);
-    font-weight: 400;
-    font-family: var(--mono);
-    text-transform: none;
-    letter-spacing: 0;
-    margin-top: .15rem;
-}
-.param-panel {
-    border-left: 3px solid var(--accent);
-    animation: fadeIn .2s ease;
-}
-@keyframes fadeIn {
-    from { opacity:0; transform:translateY(5px); }
-    to   { opacity:1; transform:translateY(0); }
-}
+    .hint {
+        display: block;
+        font-size: .68rem;
+        color: var(--muted);
+        font-weight: 400;
+        font-family: var(--mono);
+        text-transform: none;
+        letter-spacing: 0;
+        margin-top: .15rem;
+    }
+
+    .param-panel {
+        border-left: 3px solid var(--accent);
+        animation: fadeIn .2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 </style>
 
 <script>
-function showParams(id) {
-    document.querySelectorAll(".param-panel")
+    function showParams(id) {
+        document.querySelectorAll(".param-panel")
             .forEach(p => p.style.display = "none");
-    const p = document.getElementById("params-" + id);
-    if (p) p.style.display = "block";
-}
-showParams("logistic");
+        const p = document.getElementById("params-" + id);
+        if (p) p.style.display = "block";
+    }
+    showParams("logistic");
 </script>
 
 {% endblock %}

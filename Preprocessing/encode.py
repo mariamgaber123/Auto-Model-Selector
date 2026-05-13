@@ -1,14 +1,26 @@
 import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
 
-def encode_data(df):
-    df_encoded = df.copy()
+def encode_data(X):
 
-    # get categorical columns
-    categorical_cols = df_encoded.select_dtypes(include=['object', 'category']).columns
+    numeric_cols = X.select_dtypes(include=['number']).columns
+    categorical_cols = X.select_dtypes(include=['object', 'category']).columns
 
-    # apply one-hot encoding
-    df_encoded = pd.get_dummies(df_encoded, columns=categorical_cols, drop_first=True)
+    numeric_transformer = SimpleImputer(strategy="mean")
 
-    print(f"Encoded columns: {list(categorical_cols)}")
+    categorical_transformer = Pipeline(steps=[
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("encoder", OneHotEncoder(handle_unknown="ignore"))
+    ])
 
-    return df_encoded
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_transformer, numeric_cols),
+            ("cat", categorical_transformer, categorical_cols)
+        ]
+    )
+
+    return preprocessor
