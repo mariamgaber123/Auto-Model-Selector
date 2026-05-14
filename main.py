@@ -8,7 +8,7 @@ from models.model_factory import get_model
 from models.train import train_model
 from models.evaluate import evaluate_model
 from sklearn.utils.multiclass import type_of_target
-
+from sklearn.decomposition import PCA
 
 CLASSIFICATION_MODELS = {"Logistic Regression", "SVM", "KNN", "Random Forest","Neural Network (MLP)"}
 REGRESSION_MODELS = {"Linear Regression"}
@@ -30,7 +30,7 @@ def detect_problem_type(y):
     return "regression"
 
 
-def full_pipeline(df, target_column, model_name, params=None):
+def full_pipeline(df, target_column, model_name, params=None, use_pca=False):
     """
     Main training pipeline with proper preprocessing
     """
@@ -71,11 +71,16 @@ def full_pipeline(df, target_column, model_name, params=None):
     model = get_model(model_name, params)
 
     # Create full pipeline
-    pipeline = Pipeline([
-        ("preprocessor", preprocessor),
-        # No extra scaler here - we removed the double scaling
-        ("model", model)
-    ])
+    steps = [("preprocessor", preprocessor)]
+
+    #Applay PCA 
+
+    if use_pca:
+        steps.append(("pca", PCA(n_components=0.95)))
+
+    steps.append(("model", model))
+
+    pipeline = Pipeline(steps)
 
     # Train
     trained_model = train_model(pipeline, X_train, y_train)

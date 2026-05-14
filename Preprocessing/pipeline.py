@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 from preprocessing.encode import encode_data
-
+from sklearn.decomposition import PCA
 
 def build_preprocessor(df):
 

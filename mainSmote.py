@@ -7,6 +7,7 @@ from models.model_factory import get_model
 from models.train import train_model
 from models.evaluate import evaluate_model
 from sklearn.utils.multiclass import type_of_target
+from sklearn.decomposition import PCA
 import pandas as pd
 import numpy as np
 
@@ -27,7 +28,7 @@ def detect_problem_type(y):
     return "regression"
 
 
-def full_pipeline_S(df, target_column, model_name, params=None):
+def full_pipeline_S(df, target_column, model_name, params=None, use_pca=False):
 
     df = clean_data(df, target_column=target_column)
 
@@ -48,10 +49,19 @@ def full_pipeline_S(df, target_column, model_name, params=None):
 
     X_train_processed = preprocessor.fit_transform(X_train)
     X_test_processed = preprocessor.transform(X_test)
+    
+    #ِApplay PCA
+    pca_model = None
+    if use_pca:
+        pca_model = PCA(n_components=0.95)
+        X_train_processed = pca_model.fit_transform(X_train_processed)
+        X_test_processed = pca_model.transform(X_test_processed)
 
     X_train_sm, y_train_sm = apply_smote(X_train_processed, y_train)
 
     model = get_model(model_name, params)
+
+
 
     # Train
     trained_model = train_model(model, X_train_sm, y_train_sm)
@@ -61,24 +71,29 @@ def full_pipeline_S(df, target_column, model_name, params=None):
 
     # ==================== FIXED WRAPPER ====================
     class PreprocessedPipeline:
-        def __init__(self, preprocessor, model):
+        def __init__(self, preprocessor, model, pca=None):
             self.preprocessor = preprocessor
             self.model = model
+            self.pca = pca
 
-        def predict(self, X):
+        def _transform(self, X):
             if not isinstance(X, pd.DataFrame):
                 X = pd.DataFrame(X, columns=self.preprocessor.feature_names_in_ 
                                if hasattr(self.preprocessor, 'feature_names_in_') else None)
-            X_processed = self.preprocessor.transform(X)
+            
+            X_out = self.preprocessor.transform(X)
+            if self.pca:
+                X_out = self.pca.transform(X_out)
+            return X_out
+
+        def predict(self, X):
+            X_processed = self._transform(X)
             return self.model.predict(X_processed)
 
         def predict_proba(self, X):
-            if not isinstance(X, pd.DataFrame):
-                X = pd.DataFrame(X, columns=self.preprocessor.feature_names_in_ 
-                               if hasattr(self.preprocessor, 'feature_names_in_') else None)
-            X_processed = self.preprocessor.transform(X)
+            X_processed = self._transform(X)
             return self.model.predict_proba(X_processed)
 
-    wrapped_model = PreprocessedPipeline(preprocessor, trained_model)
+    wrapped_model = PreprocessedPipeline(preprocessor, trained_model, pca=pca_model)
 
     return wrapped_model, metrics, X.columns

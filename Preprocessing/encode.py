@@ -4,6 +4,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 
+
 def encode_data(X):
 
     numeric_cols = X.select_dtypes(include=['number']).columns
@@ -24,5 +25,6 @@ def encode_data(X):
             ("cat", categorical_transformer, categorical_cols)
         ]
     )
+
 
     return preprocessor

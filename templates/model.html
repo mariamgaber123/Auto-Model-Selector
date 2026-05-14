@@ -38,6 +38,16 @@
             </label>
         </div>
         <div style="height: 18px;"></div>
+        <div class="smote-card">
+            <div class="smote-title" style="font-size: 24;">Advanced Preprocessing</div>
+            <div style="height: 12px;"></div>
+
+            <label class="smote-option">
+                <input type="checkbox" name="use_pca" value="true">
+                <span>Enable PCA (Dimensionality Reduction)</span>
+            </label>
+        </div>
+        <div style="height: 18px;"></div>
         <div class="model-grid">
             <div>
                 <input class="model-option" type="radio" name="model_name" id="m1" value="Logistic Regression" checked
@@ -47,7 +57,7 @@
                     <span class="m-type">Classification</span>
                 </label>
             </div>
-             <div>
+            <div>
                 <input class="model-option" type="radio" name="model_name" id="m6" value="Neural Network (MLP)"
                     onchange="showParams('mlp')">
                 <label class="model-label" for="m6">
@@ -198,7 +208,7 @@
                     <option value="logistic">logistic (sigmoid)</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>Solver <span class="hint">Weight optimization — default adam</span></label>
                 <select name="solver">

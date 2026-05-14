@@ -161,18 +161,20 @@ def train_model_route():
             params["fit_intercept"] = (
                 request.form.get("fit_intercept", "true").lower() == "true"
             )
-
+        
         use_smote = request.form.get("use_smote", "false") == "true"
+
+        use_pca = request.form.get("use_pca", "false") == "true"
 
         if use_smote:
             trained_model, metrics, feature_columns = full_pipeline_S(
-                df_global, target_column, model_name, params
+                df_global, target_column, model_name, params, use_pca=use_pca
             )
-            log_transformed_global = False
         else:
             trained_model, metrics, feature_columns = full_pipeline(
-                df_global, target_column, model_name, params
+                df_global, target_column, model_name, params, use_pca=use_pca
             )
+
             # Detect if log transform was applied (regression + positive target)
             y = df_global[target_column]
             import pandas as pd2
